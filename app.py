@@ -12,16 +12,11 @@ chat_history = []
 
 @app.route('/')
 def index():
-    return jsonify({'success': True, 'message': 'Registration successful'})
+    return jsonify({'success': True, 'message': 'Connected'})
 
 
 @app.route('/register', methods=['POST'])
 def register():
-    username = request.form.get('username')
-    if username in users:
-        return jsonify({'success': False, 'message': 'Username already taken'})
-
-    users[username] = request.sid
     return jsonify({'success': True, 'message': 'Registration successful'})
 
 
