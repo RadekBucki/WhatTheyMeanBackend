@@ -1,6 +1,5 @@
 # Setup
 
-TODO: Add setup instructions here.
 
 ## Running the Script on Linux
 
