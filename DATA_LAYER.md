@@ -1,5 +1,5 @@
 # Database design
-
+The database management system used in this project is MongoDB.
 ## Diagram of the NoSQL database
 ![img.png](Images/database_diagram.png)
 
