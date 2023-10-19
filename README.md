@@ -9,3 +9,4 @@
 ## Read before start
 - [Code style and quality](CODE.md)
 - [Application setup](SETUP.md)
+- [Database design](DATA_LAYER.md)
