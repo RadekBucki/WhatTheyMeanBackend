@@ -1,4 +1,6 @@
+import concurrent
 import os
+import openai
 from typing import Dict
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
@@ -13,14 +15,28 @@ class ProcessingDTO:
 
 def process_audio(base64: str) -> ProcessingDTO:
     transcription = transcribe(base64)
-    summary_result = sum_up(transcription)
-    sentiment_result = run_sentiment_analysis(transcription)
+    # run sentiment and summary in parallel
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+        summary_future = executor.submit(sum_up, transcription)
+        sentiment_future = executor.submit(run_sentiment_analysis, transcription)
+    summary_result = summary_future.result()
+    sentiment_result = sentiment_future.result()
     return ProcessingDTO(transcription, summary_result, sentiment_result)
 
 
 def transcribe(base64: str) -> str:
-    # transcribe audion in parallel
-    return "lorem ipsum"
+    transcript: str = ''
+    mp3_data = base64.b64decode(base64)
+    audio_file_path = "audio.mp3"
+    with open(audio_file_path, "wb") as mp3_file:
+        mp3_file.write(mp3_data)
+    with open(audio_file_path, "rb") as audio_file:
+        try:
+            transcript = openai.Audio.transcribe("whisper-1", audio_file, api_key=OPENAI_API_KEY)
+        except openai.error.OpenAIError:
+            print("OpenAI whisper's API exception occurred")
+    os.remove(audio_file_path)
+    return transcript
 
 
 def run_sentiment_analysis(text: str) -> Dict[str, float]:
