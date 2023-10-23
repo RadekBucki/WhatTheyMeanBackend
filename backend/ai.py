@@ -1,6 +1,7 @@
-import concurrent
+import concurrent.futures
 import os
 import openai
+import base64 as b64
 from typing import Dict
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
@@ -15,6 +16,8 @@ class ProcessingDTO:
 
 def process_audio(base64: str) -> ProcessingDTO:
     transcription = transcribe(base64)
+    if transcription == '':
+        return ProcessingDTO('', '', None)
     # run sentiment and summary in parallel
     with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
         summary_future = executor.submit(sum_up, transcription)
@@ -26,7 +29,7 @@ def process_audio(base64: str) -> ProcessingDTO:
 
 def transcribe(base64: str) -> str:
     transcript: str = ''
-    mp3_data = base64.b64decode(base64)
+    mp3_data = b64.b64decode(base64)
     audio_file_path = "audio.mp3"
     with open(audio_file_path, "wb") as mp3_file:
         mp3_file.write(mp3_data)
