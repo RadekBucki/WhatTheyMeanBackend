@@ -7,10 +7,11 @@ logger = logging.getLogger(__name__)
 def register_analysis(socketio):
 
     @socketio.on('analyse')
-    def handle_analyse(message):
-        print(f"Received message: {message}")
-        # mp4 to mp3 start 0%
-        emit('progress', "20", broadcast=True)
+    def handle_analyse(analyse_id: int):
+        logger.info(f"Received analyse: {analyse_id}")
 
-        # mp3 - 20%
-        emit('progress', "40", broadcast=True)
+        # file to mp3 start -> completed 10%
+        emit('progress', "20%", broadcast=True)
+
+        # mp3 -> text start -> completed 30%
+        emit('progress', "30%", broadcast=True)
