@@ -17,6 +17,10 @@ def register_file():
 
 @api.route('/register/url', methods=['POST'])
 def register_url():
+    url = request.args.get('url')
+    if not url:
+        raise Exception('No url part')
+    logger.info(f"Received url: {url}")
     return "id and status"
 
 @api.route('/analyse/<analyse_id>', methods=['GET'])
