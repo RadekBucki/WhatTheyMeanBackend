@@ -53,6 +53,10 @@
             <input type="text" id="textfield_input" style="height: 30px; width: 400px; margin-top: 5px; margin-right: 10px;" class="textfield">
             <button id="send_button" class="button is-primary" style="margin-top: 5px; width: 90px; height: 30px;">Send</button>
         </div>
+        <form method="POST" action="/register/file" enctype="multipart/form-data">
+      <p><input type="file" name="file"></p>
+      <p><input type="submit" value="Submit"></p>
+    </form>
     </div>
 </body>
 </html>
