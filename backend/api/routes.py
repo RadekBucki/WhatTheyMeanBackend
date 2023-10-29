@@ -29,7 +29,7 @@ def get_analyse(analyse_id: int):
 
 @api.route('/analyse', methods=['GET'])
 def get_analyses():
-    return "Get list of analyses"
+    return []
 
 # for socket connection testing purposes
 @api.route('/', methods=['GET'])

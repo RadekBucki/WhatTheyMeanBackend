@@ -8,10 +8,12 @@ def client():
     with app.app.test_client() as client:
         yield client
 
-def test_index(client):
-    response = client.get('/')
-    assert b'Connected' in response.data
+def test_get_analysis(client):
+    response = client.get('/analyse')
+    assert response.status_code == 200
+    assert [] == response.json
 
-def test_register(client):
-    response = client.post('/register', data={'username': 'testuser'})
-    assert b'Registration successful' in response.data
+def test_get_analyse_by_id(client):
+    response = client.get('/analyse/1')
+    assert response.status_code == 200
+    assert "Get analyse 1" == response.data.decode("utf-8")
