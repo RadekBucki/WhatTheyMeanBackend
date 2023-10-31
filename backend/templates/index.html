@@ -14,7 +14,7 @@
         <!-- Script to handle socket.io -->
         <script>
             var socket;
-            $(document).ready(function() {
+            document.addEventListener('DOMContentLoaded', function() {
                 // The http vs. https is important. Use http for localhost!
                 socket = io.connect("http://127.0.0.1:5000");
 

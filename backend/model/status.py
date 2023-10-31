@@ -1,10 +1,6 @@
 from enum import Enum
 
 class Status(Enum):
-    QUEUED = "QUEUED"
-    RUNNING = "RUNNING"
+    IN_PROGRESS = "IN_PROGRESS"
     SUCCESS = "SUCCESS"
     FAILED = "FAILED"
-    CANCELLED = "CANCELLED"
-    UNKNOWN = "UNKNOWN"
-    COMPLETED = "COMPLETED"

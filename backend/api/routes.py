@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request
 
 api = Blueprint('api', __name__)
 logger = logging.getLogger(__name__)
