@@ -1,37 +1,28 @@
-# app.py
-from flask import Flask, render_template, request, jsonify
-from flask_socketio import SocketIO, emit
+import logging
+
+from flask import Flask
+from flask_socketio import SocketIO
+
+from backend.api.exception_handlers import handle_500_error, handle_bad_request
+from backend.api.routes import api
+from backend.socket.register_analysis import register_analysis
+from backend.socket.register_socket import register_socketio_events
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key'  # Replace with your secret key
-socketio = SocketIO(app)
+app.debug = True
+socketio = SocketIO(app, cors_allowed_origins="*")
 
-users = {}
-chat_history = []
+# Set up logging
+logging.basicConfig(level=logging.DEBUG, force=True)
 
+# Register the routes
+app.register_blueprint(api)
+app.register_error_handler(500, handle_500_error)
+app.register_error_handler(Exception, handle_bad_request)
 
-@app.route('/')
-def index():
-    return jsonify({'success': True, 'message': 'Connected'})
-
-
-@app.route('/register', methods=['POST'])
-def register():
-    return jsonify({'success': True, 'message': 'Registration successful'})
-
-
-@socketio.on('message')
-def handle_message(data):
-    username = data['username']
-    message = data['message']
-    chat_history.append({'username': username, 'message': message})
-    emit('message', {'username': username, 'message': message}, broadcast=True)
-
-
-@socketio.on('connect')
-def handle_connect():
-    emit('update_users', list(users.keys()))
-
+# Register the socketio events
+register_socketio_events(socketio)
+register_analysis(socketio)
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
