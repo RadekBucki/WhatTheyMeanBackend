@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  db:
+    image: mongo:7-jammy
+    restart: unless-stopped
+    env_file: .env
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data_container:/data/db
+
+volumes:
+  mongo_data_container:
