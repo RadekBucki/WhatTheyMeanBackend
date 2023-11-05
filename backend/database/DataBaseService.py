@@ -2,6 +2,7 @@ import pymongo
 from Analysis import Analysis
 import dotenv
 import time
+import dotenv
 from datetime import datetime
 
 
