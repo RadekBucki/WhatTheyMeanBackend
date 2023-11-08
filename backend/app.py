@@ -1,7 +1,10 @@
 import logging
+import os
 
 from flask import Flask
+from flask.cli import load_dotenv
 from flask_socketio import SocketIO
+from flask_pymongo import PyMongo
 
 from backend.api.exception_handlers import handle_500_error, handle_bad_request
 from backend.api.routes import api
@@ -14,6 +17,12 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG, force=True)
+
+# Connect to database
+load_dotenv()
+app.config["MONGO_URI"] = os.getenv('MONGO_DB_URI')
+mongo = PyMongo(app)
+db = mongo.db
 
 # Register the routes
 app.register_blueprint(api)
