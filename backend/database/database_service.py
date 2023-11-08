@@ -6,6 +6,7 @@ from backend.model.analysis import Analysis
 from backend.model.dict_dataclass_converters import dataclass_to_dict_without_id, dict_to_dataclass
 from backend.database.exceptions import DocumentNotFoundException
 
+
 class DataBaseService:
 
     @staticmethod
@@ -20,7 +21,7 @@ class DataBaseService:
                 raise DocumentNotFoundException("Analysis with id " + str(uuid) + " not found in collection")
             return dict_to_dataclass(dict_analysis, Analysis)
         except DocumentNotFoundException as e:
-            print("An exception occured:", type(e).__name__, "-", e)
+            print("An exception occurred:", type(e).__name__, "-", e)
 
     @staticmethod
     def get_all_analyses():
@@ -41,4 +42,3 @@ class DataBaseService:
                 "author_attitude": author_attitude.value
             }
         })
-
