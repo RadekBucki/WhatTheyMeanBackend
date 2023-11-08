@@ -9,3 +9,4 @@ flask_pymongo==2.3.0
 datetime==5.2
 typing-extensions==4.8.0
 python-dotenv==1.0.0
+pymongo==4.6.0
