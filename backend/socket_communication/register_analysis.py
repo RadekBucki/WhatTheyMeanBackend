@@ -12,7 +12,7 @@ def register_analysis(socketio):
         logger.info(f"Received analyse: {analyse_id}")
 
         # file to mp3 start -> completed 10%
-        emit('progress', "20%", broadcast=True)
+        emit('progress', "20", broadcast=True)
 
         # mp3 -> text start -> completed 30%
-        emit('progress', "30%", broadcast=True)
+        emit('progress', "30", broadcast=True)
