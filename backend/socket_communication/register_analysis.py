@@ -3,7 +3,7 @@ import string
 
 from flask_socketio import emit
 
-from backend.ai import process_audio, transcribe, sum_up, run_sentiment_analysis
+from backend.ai import process_audio
 from backend.video_parser.YouTubeDownloader import YouTubeDownloader
 
 logger = logging.getLogger(__name__)
