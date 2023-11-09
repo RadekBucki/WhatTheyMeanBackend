@@ -18,4 +18,5 @@ def register_analysis(socketio):
         # mp3 -> text start -> completed 30%
         emit('progress', "30", broadcast=True)
 
-        emit('completed', analyse_uuid, broadcast=True)
+        # text -> sentiment start -> completed 50%
+        emit('progress', "50", broadcast=True)
