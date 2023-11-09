@@ -4,7 +4,7 @@ from flask import Flask
 from flask_cors import CORS
 from flask_socketio import SocketIO
 
-from backend.api.exception_handlers import handle_500_error, handle_bad_request
+from backend.exceptions.exception_handlers import handle_500_error, handle_bad_request
 from backend.api.routes import api
 from backend.socket_communication.register_analysis import register_analysis
 from backend.socket_communication.register_socket import register_socketio_events
