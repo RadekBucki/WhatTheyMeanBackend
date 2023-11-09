@@ -4,6 +4,7 @@ from flask_socketio import emit
 
 logger = logging.getLogger(__name__)
 
+
 def register_socketio_events(socketio):
 
     @socketio.on('connect')
