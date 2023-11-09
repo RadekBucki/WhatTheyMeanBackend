@@ -4,6 +4,7 @@ from flask_socketio import emit
 
 logger = logging.getLogger(__name__)
 
+
 def register_analysis(socketio):
 
     @socketio.on('analyse')
