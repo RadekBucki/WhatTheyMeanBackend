@@ -2,4 +2,6 @@ flask==3.0.0
 flask-socketio==5.3.6
 pytest==7.4.2
 pytube==15.0.0
-vaderSentiment~=3.3.2
+python-socketio==5.10.0
+python-engineio==4.8.0
+flask_cors==4.0.0
