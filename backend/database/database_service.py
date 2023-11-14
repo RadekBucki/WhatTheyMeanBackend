@@ -24,7 +24,7 @@ class DataBaseService:
         if analysis:
             return analysis
         else:
-            raise DocumentNotFoundException("Analysis with _id " + str(uuid) + " not found in collection")
+            raise DocumentNotFoundException("Analysis with id " + str(uuid) + " not found in collection")
 
     @staticmethod
     def get_all_analyses() -> Iterator[Document]:
