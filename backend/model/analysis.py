@@ -1,16 +1,15 @@
-from bson import binary, ObjectId
-from dataclasses import dataclass
+from bson import binary
 from datetime import datetime
 from typing import Optional
+
+from mongodb_odm import Document
 
 from backend.model.author_attitude import AuthorAttitude
 from backend.model.file_type import FileType
 from backend.model.status import Status
 
 
-@dataclass
-class Analysis:
-    _id: Optional[ObjectId] = None
+class Analysis(Document):
     name: str = "Analysis"
     start_date: datetime = datetime.now()
     finish_date: Optional[datetime] = None
