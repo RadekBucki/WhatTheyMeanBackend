@@ -25,6 +25,8 @@ jobs:
       uses: supercharge/mongodb-github-action@1.10.0
       with:
         mongodb-version: ${{ matrix.mongodb-version }}
+        mongodb-username: mongo
+        mongodb-password: password
     - name: Install Dependencies
       run: |
         python -m pip install --upgrade pip
