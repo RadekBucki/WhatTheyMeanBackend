@@ -1,21 +1,25 @@
 import dotenv
 from datetime import datetime
 
-from mongodb_odm import connect
+from mongodb_odm import connect, Document
+from typing import Iterator
+from bson import binary, ObjectId
+
 from backend.model.analysis import Analysis
 from backend.database.exceptions import DocumentNotFoundException
+from backend.model.author_attitude import AuthorAttitude
+from backend.model.status import Status
 
 
 class DataBaseService:
-
     connect(dotenv.dotenv_values().get("MONGO_DB_URI"))
 
     @staticmethod
-    def create_analysis(raw_file=None, link=None):
+    def create_analysis(raw_file: binary.Binary = None, link: str = None) -> ObjectId:
         return Analysis(raw_file=raw_file, link=link).create().id
 
     @staticmethod
-    def get_analysis_by_id(uuid):
+    def get_analysis_by_id(uuid: ObjectId) -> Analysis:
         analysis = Analysis.find_one({"_id": uuid})
         if analysis:
             return analysis
@@ -23,11 +27,12 @@ class DataBaseService:
             raise DocumentNotFoundException("Analysis with _id " + str(uuid) + " not found in collection")
 
     @staticmethod
-    def get_all_analyses():
+    def get_all_analyses() -> Iterator[Document]:
         return Analysis.find()
 
     @staticmethod
-    def update_analysis_by_id(uuid, status, full_transcription, video_summary, author_attitude, raw_file=None):
+    def update_analysis_by_id(uuid: ObjectId, status: Status, full_transcription: str, video_summary: str,
+                              author_attitude: AuthorAttitude, raw_file: binary.Binary = None):
         analysis = Analysis.find_one({"_id": uuid})
         if analysis:
             analysis.finish_date = datetime.now()

@@ -15,7 +15,6 @@ socketio = SocketIO(app, cors_allowed_origins="*")
 # Set up logging
 logging.basicConfig(level=logging.DEBUG, force=True)
 
-
 # Register the routes
 app.register_blueprint(api)
 app.register_error_handler(500, handle_500_error)
