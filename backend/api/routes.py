@@ -2,13 +2,15 @@ import logging
 
 from flask import Blueprint, render_template, request
 
+from backend.exceptions.illegal_argument_exception import IllegalArgumentException
+
 api = Blueprint('api', __name__)
 logger = logging.getLogger(__name__)
 
 @api.route('/register/file', methods=['POST'])
 def register_file():
     if 'file' not in request.files:
-        raise Exception('No file part')
+        raise IllegalArgumentException('No file part')
 
     file = request.files.get('file')
     logger.info(f"Received file: {file}")
@@ -19,7 +21,7 @@ def register_file():
 def register_url():
     url = request.args.get('url')
     if not url:
-        raise Exception('No url part')
+        raise IllegalArgumentException('No url part')
     logger.info(f"Received url: {url}")
     return "id and status"
 
