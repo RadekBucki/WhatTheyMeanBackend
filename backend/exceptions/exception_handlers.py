@@ -6,8 +6,8 @@ logger = logging.getLogger(__name__)
 
 def handle_500_error(e):
     logger.error(e)
-    return jsonify({'error': str(e)}), 500
+    return jsonify({'message': str(e)}), 500
 
 def handle_bad_request(e):
     logger.warning(e)
-    return jsonify({'error': str(e)}), 400
+    return jsonify({'message': str(e)}), 400

@@ -1,15 +1,17 @@
 import logging
 
 from flask import Flask
+from flask_cors import CORS
 from flask_socketio import SocketIO
 
-from backend.api.exception_handlers import handle_500_error, handle_bad_request
+from backend.exceptions.exception_handlers import handle_500_error, handle_bad_request
 from backend.api.routes import api
-from backend.socket.register_analysis import register_analysis
-from backend.socket.register_socket import register_socketio_events
+from backend.socket_communication.register_analysis import register_analysis
+from backend.socket_communication.register_socket import register_socketio_events
 
 app = Flask(__name__)
 app.debug = True
+CORS(app)
 socketio = SocketIO(app, cors_allowed_origins="*")
 
 # Set up logging

@@ -10,3 +10,5 @@ typing-extensions==4.8.0
 python-dotenv==1.0.0
 pymongo==4.6.0
 mongodb-odm==0.2.4
+vaderSentiment~=3.3.2
+moviepy==1.0.3
