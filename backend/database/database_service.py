@@ -27,20 +27,18 @@ class DataBaseService:
             raise DocumentNotFoundException("Analysis with id " + str(uuid) + " not found in collection")
 
     @staticmethod
-    def get_all_analyses() -> Iterator[Document]:
-        return Analysis.find()
+    def get_analyses_by_ids(id_list: list[ObjectId]) -> Iterator[Analysis]:
+        return Analysis.find(filter={"_id": {"$in": id_list}})
+
 
     @staticmethod
     def update_analysis_by_id(uuid: ObjectId, status: Status, full_transcription: str, video_summary: str,
                               author_attitude: AuthorAttitude, raw_file: binary.Binary = None):
-        analysis = Analysis.find_one({"_id": uuid})
-        if analysis:
-            analysis.finish_date = datetime.now()
-            analysis.status = status
-            analysis.raw_file = raw_file
-            analysis.full_transcription = full_transcription
-            analysis.video_summary = video_summary
-            analysis.author_attitude = author_attitude
-            analysis.update()
-        else:
-            raise DocumentNotFoundException("Analysis with id " + str(uuid) + " not found in collection")
+        analysis = DataBaseService.get_analysis_by_id(uuid=uuid)
+        analysis.finish_date = datetime.now()
+        analysis.status = status
+        analysis.raw_file = raw_file
+        analysis.full_transcription = full_transcription
+        analysis.video_summary = video_summary
+        analysis.author_attitude = author_attitude
+        analysis.update()

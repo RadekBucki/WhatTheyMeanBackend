@@ -35,13 +35,18 @@ class TestDatabaseService(unittest.TestCase):
         self.assertRaises(DocumentNotFoundException, DataBaseService.get_analysis_by_id,
                           ObjectId("111122223333444455556666"))
 
-    def test_get_all_analyses(self):
+    def test_get_multiple_analyses(self):
         analysis_ids = []
+        searched_ids = []
         for i in range(3):
             analysis_id = DataBaseService.create_analysis(link="link_to_video_" + str(i))
             analysis_ids.append(analysis_id)
+        searched_ids.append(analysis_ids[0])
+        searched_ids.append(analysis_ids[2])
 
-        self.assertGreaterEqual(sum(1 for _ in DataBaseService.get_all_analyses()), 3)
+        analyses = DataBaseService.get_analyses_by_ids(searched_ids)
+        for i, analysis in enumerate(analyses):
+            self.assertEqual(analysis.id, searched_ids[i])
 
         for analysis_id in analysis_ids:
             Analysis().delete_one({"_id": analysis_id})
