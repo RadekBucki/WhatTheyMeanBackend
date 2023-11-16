@@ -22,8 +22,6 @@ def register_analysis(socketio):
         analyze: Analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid))
 
         try:
-            DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.IN_PROGRESS)
-
             base64_file: str = ''
             if analyze.link:
                 base64_file = YouTubeDownloader.download(analyze.link)

@@ -21,7 +21,7 @@ class TestDatabaseService(unittest.TestCase):
         self.assertEqual(created_analysis.name, "Analysis")
         self.assertEqual(created_analysis.start_date.date(), date.date())
         self.assertIsNone(created_analysis.finish_date)
-        self.assertEqual(created_analysis.status, Status.QUEUED)
+        self.assertEqual(created_analysis.status, Status.IN_PROGRESS)
         self.assertIsNone(created_analysis.file_type)
         self.assertEqual(created_analysis.link, "link_to_video")
         self.assertIsNone(created_analysis.raw_file)
