@@ -4,7 +4,7 @@ from typing import Dict
 from bson import ObjectId
 from flask_socketio import emit
 
-from backend.ai.processing import Processing, transcribe, sum_up, run_sentiment_analysis
+from backend.ai.processing import transcribe, sum_up, run_sentiment_analysis
 from backend.database.database_service import DataBaseService
 from backend.model.analysis import Analysis
 from backend.model.author_attitude import AuthorAttitude
@@ -13,7 +13,6 @@ from backend.model.status import Status
 from backend.video_parser.YouTubeDownloader import YouTubeDownloader
 
 logger: logging.Logger = logging.getLogger(__name__)
-processing: Processing = Processing()
 
 def register_analysis(socketio):
 
