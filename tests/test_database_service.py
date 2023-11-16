@@ -15,7 +15,7 @@ class TestDatabaseService(unittest.TestCase):
     def test_create_and_get_analysis(self):
         analysis_id = DataBaseService.create_analysis(link="link_to_video")
         date = datetime.datetime.now()
-        created_analysis = DataBaseService.get_analysis_by_id(analysis_id)
+        created_analysis = DataBaseService.get_analysis_by_uuid(analysis_id)
 
         self.assertEqual(created_analysis.id, analysis_id)
         self.assertEqual(created_analysis.name, "Analysis")
@@ -32,7 +32,7 @@ class TestDatabaseService(unittest.TestCase):
         Analysis().delete_one({"_id": analysis_id})
 
     def test_get_non_existent_analysis(self):
-        self.assertRaises(DocumentNotFoundException, DataBaseService.get_analysis_by_id,
+        self.assertRaises(DocumentNotFoundException, DataBaseService.get_analysis_by_uuid,
                           ObjectId("111122223333444455556666"))
 
     def test_get_multiple_analyses(self):
@@ -44,7 +44,7 @@ class TestDatabaseService(unittest.TestCase):
         searched_ids.append(analysis_ids[0])
         searched_ids.append(analysis_ids[2])
 
-        analyses = DataBaseService.get_analyses_by_ids(searched_ids)
+        analyses = DataBaseService.get_analyses_by_uuids(searched_ids)
         for i, analysis in enumerate(analyses):
             self.assertEqual(analysis.id, searched_ids[i])
 
@@ -57,7 +57,7 @@ class TestDatabaseService(unittest.TestCase):
                                               full_transcription="full_transcription",
                                               video_summary="video_summary", author_attitude=AuthorAttitude.POSITIVE)
         date = datetime.datetime.now()
-        updated_analysis = DataBaseService.get_analysis_by_id(analysis_id)
+        updated_analysis = DataBaseService.get_analysis_by_uuid(analysis_id)
         self.assertEqual(updated_analysis.id, analysis_id)
         self.assertEqual(updated_analysis.finish_date.date(), date.date())
         self.assertEqual(updated_analysis.status, Status.SUCCESS)

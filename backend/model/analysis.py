@@ -13,7 +13,7 @@ class Analysis(Document):
     name: str = "Analysis"
     start_date: datetime = datetime.now()
     finish_date: Optional[datetime] = None
-    status: Status = Status.IN_PROGRESS
+    status: Status = Status.QUEUED
     file_type: Optional[FileType] = None
     link: Optional[str] = None
     raw_file: Optional[binary.Binary] = None

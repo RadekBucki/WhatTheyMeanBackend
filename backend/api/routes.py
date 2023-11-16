@@ -1,43 +1,53 @@
 import logging
-from typing import Iterator
+from typing import Any
 
 from bson import ObjectId
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, jsonify, Response
 
 from backend.database.database_service import DataBaseService
 from backend.exceptions.illegal_argument_exception import IllegalArgumentException
-from backend.model.analysis import Analysis
 
 api = Blueprint('api', __name__)
 logger = logging.getLogger(__name__)
 
 @api.route('/register/file', methods=['POST'])
-def register_file() -> ObjectId:
+def register_file() -> Response:
     if 'file' not in request.files:
         raise IllegalArgumentException('No file part')
 
     file = request.files.get('file')
     logger.info(f"Received file: {file}")
+    result: ObjectId = DataBaseService.create_analysis(raw_file=file)
 
-    return DataBaseService.create_analysis(raw_file=file)
+    return jsonify({'analysis_uuid': str(result)})
 
 @api.route('/register/url', methods=['POST'])
-def register_url() -> ObjectId:
+def register_url() -> Response:
     url = request.args.get('url')
 
     if not url:
         raise IllegalArgumentException('No url part')
     logger.info(f"Received url: {url}")
+    result: ObjectId = DataBaseService.create_analysis(link=url)
 
-    return DataBaseService.create_analysis(link=url)
+    return jsonify({'analysis_uuid': str(result)})
 
-@api.route('/analyse/<analyse_id>', methods=['GET'])
-def get_analyse(analyse_id: ObjectId) -> Analysis:
-    return DataBaseService.get_analysis_by_id(analyse_id)
+@api.route('/analyse/<analyse_uuid>', methods=['GET'])
+def get_analyse(analyse_uuid: str) -> Response:
+    analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid)).to_mongo()
+    return jsonify(analysis)
 
 @api.route('/analyse', methods=['GET'])
-def get_analyses(id_list: list[ObjectId]) -> Iterator[Analysis]:
-    return DataBaseService.get_analyses_by_ids(id_list)
+def get_analyses() -> list[dict[str, Any]]:
+    uuid_list = request.args.getlist('uuids')
+
+    if not uuid_list:
+        raise IllegalArgumentException('No uuids part')
+    logger.info(f"Received uuids: {uuid_list}")
+    object_id_list = [ObjectId(uuid) for uuid in uuid_list]
+    object_list = [analysis.to_mongo() for analysis in DataBaseService.get_analyses_by_uuids(object_id_list)]
+
+    return object_list
 
 # for socket connection testing purposes
 @api.route('/', methods=['GET'])

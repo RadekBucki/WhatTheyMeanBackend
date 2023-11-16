@@ -27,7 +27,7 @@
                     document.getElementById("chat").innerHTML += "You: " + text + "\n\n";
 
                     // Emit a message to the 'send_message' socket
-                    socket.emit('analyse', {'text':text});
+                    socket.emit('analyse', text);
 
                     // Set the textfield input to empty
                     document.getElementById("textfield_input").value = "";

@@ -1,5 +1,7 @@
 import os
 from typing import Dict
+
+from bson import Binary
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
