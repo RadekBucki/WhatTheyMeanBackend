@@ -1,31 +1,34 @@
 import logging
-import string
 
+from bson import ObjectId
 from flask_socketio import emit
 
-from backend.ai import process_audio
+from backend.ai.processing import Processing
+from backend.database.database_service import DataBaseService
+from backend.model.analysis import Analysis
+from backend.model.status import Status
 from backend.video_parser.YouTubeDownloader import YouTubeDownloader
 
-logger = logging.getLogger(__name__)
-
+logger: logging.Logger = logging.getLogger(__name__)
+processing: Processing = Processing()
 
 def register_analysis(socketio):
 
-#service
-
     @socketio.on('analyse')
-    def handle_analyse(analyse_uuid: string):
-        logger.info(f"Received analyse: {analyse_uuid}")
-        analyse = {
-            "url": "https://www.youtube.com/watch?v=NxHrTaWzAL4"
-        }
-        # analyse = service.get_analyse(analyse_uuid)
+    def handle_analyse(analyse_uuid: ObjectId):
+        logger.info(f"Received analyse uuid: {analyse_uuid}")
+        analyze: Analysis = DataBaseService.get_analysis_by_id(analyse_uuid)
 
-        base64_file = None
-        if analyse['url']:
-            base64_file = YouTubeDownloader.download(analyse['url'])
+        if analyze.link:
+            base64_file = YouTubeDownloader.download(analyze.link)
+            DataBaseService.update_analysis_by_id(uuid=analyse_uuid, raw_file=base64_file)
+        DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.IN_PROGRESS)
         emit('progress', "20", broadcast=True)
 
-        processing_dto = process_audio(base64_file)
-        logger.info(f"Processing result: {processing_dto.sentiment}")
-        emit('progress', "100", broadcast=True)
+        #
+        #
+        #
+        #
+        # processing_dto = process_audio(base64_file)
+        # logger.info(f"Processing result: {processing_dto.sentiment}")
+        # emit('progress', "100", broadcast=True)
