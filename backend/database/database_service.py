@@ -1,12 +1,12 @@
-import dotenv
 from datetime import datetime
-
-from mongodb_odm import connect, Document
 from typing import Iterator
-from bson import binary, ObjectId
 
+import dotenv
+from bson import binary, ObjectId
+from mongodb_odm import connect
+
+from backend.exceptions.document_not_found_exception import DocumentNotFoundException
 from backend.model.analysis import Analysis
-from backend.database.exceptions import DocumentNotFoundException
 from backend.model.author_attitude import AuthorAttitude
 from backend.model.status import Status
 

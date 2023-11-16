@@ -4,7 +4,7 @@ import unittest
 from bson import ObjectId
 
 from backend.database.database_service import DataBaseService
-from backend.database.exceptions import DocumentNotFoundException
+from backend.exceptions.document_not_found_exception import DocumentNotFoundException
 from backend.model.analysis import Analysis
 from backend.model.author_attitude import AuthorAttitude
 from backend.model.status import Status

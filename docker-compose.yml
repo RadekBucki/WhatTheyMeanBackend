@@ -6,7 +6,7 @@ services:
     restart: unless-stopped
     env_file: .env
     ports:
-      - 27017:27017
+      - "27017:27017"
     volumes:
       - mongo_data_container:/data/db
 
