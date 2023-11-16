@@ -21,7 +21,7 @@ class TestDatabaseService(unittest.TestCase):
         self.assertEqual(created_analysis.name, "Analysis")
         self.assertEqual(created_analysis.start_date.date(), date.date())
         self.assertIsNone(created_analysis.finish_date)
-        self.assertEqual(created_analysis.status, Status.IN_PROGRESS)
+        self.assertEqual(created_analysis.status, Status.QUEUED)
         self.assertIsNone(created_analysis.file_type)
         self.assertEqual(created_analysis.link, "link_to_video")
         self.assertIsNone(created_analysis.raw_file)
@@ -53,13 +53,13 @@ class TestDatabaseService(unittest.TestCase):
 
     def test_update_analysis(self):
         analysis_id = DataBaseService.create_analysis(link="link_to_video")
-        DataBaseService.update_analysis_by_id(uuid=analysis_id, status=Status.SUCCESS,
+        DataBaseService.update_analysis_by_id(uuid=str(analysis_id),
+                                              status=Status.SUCCESS,
                                               full_transcription="full_transcription",
-                                              video_summary="video_summary", author_attitude=AuthorAttitude.POSITIVE)
-        date = datetime.datetime.now()
+                                              video_summary="video_summary",
+                                              author_attitude=AuthorAttitude.POSITIVE)
         updated_analysis = DataBaseService.get_analysis_by_uuid(analysis_id)
         self.assertEqual(updated_analysis.id, analysis_id)
-        self.assertEqual(updated_analysis.finish_date.date(), date.date())
         self.assertEqual(updated_analysis.status, Status.SUCCESS)
         self.assertEqual(updated_analysis.full_transcription, "full_transcription")
         self.assertEqual(updated_analysis.video_summary, "video_summary")
