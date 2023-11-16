@@ -2,6 +2,7 @@ from enum import Enum
 
 
 class AuthorAttitude(str, Enum):
-    POSITIVE = "POSITIVE"
-    NEGATIVE = "NEGATIVE"
-    NEUTRAL = "NEUTRAL"
+    POSITIVE = "pos"
+    NEGATIVE = "neg"
+    NEUTRAL = "neu"
+    COMPOUND = "compound"

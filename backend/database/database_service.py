@@ -32,19 +32,13 @@ class DataBaseService:
         return Analysis.find(filter={"_id": {"$in": id_list}})
 
     @staticmethod
-    def update_analysis_by_id(uuid: ObjectId,
-                              status: Status,
-                              full_transcription: str,
-                              video_summary: str,
-                              author_attitude: AuthorAttitude,
-                              raw_file: binary.Binary = None,
-                              file_type: FileType = FileType.RAW):
-        analysis = DataBaseService.get_analysis_by_uuid(uuid=uuid)
-        analysis.finish_date = datetime.now()
-        analysis.status = status
-        analysis.raw_file = raw_file
-        analysis.full_transcription = full_transcription
-        analysis.video_summary = video_summary
-        analysis.author_attitude = author_attitude
-        analysis.file_type = file_type
+    def update_analysis_by_id(uuid: str, **kwargs):
+        analysis = DataBaseService.get_analysis_by_uuid(uuid=ObjectId(uuid))
+
+        for key, value in kwargs.items():
+            if value is not None:
+                setattr(analysis, key, value)
+
+        analysis.finish_date = datetime.now() if 'finish_date' in kwargs else analysis.finish_date
+
         analysis.update()
