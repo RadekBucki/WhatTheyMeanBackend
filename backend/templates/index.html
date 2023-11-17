@@ -40,6 +40,12 @@
                 socket.on('progress', function(data) {
                     document.getElementById("chat").innerHTML += "Server: " + data + "\n\n";
                 });
+                socket.on('done', function() {
+                    document.getElementById("chat").innerHTML += "Server Done" + "\n\n";
+                });
+                socket.on('failed', function(data) {
+                    document.getElementById("chat").innerHTML += "Server Fail:" + data + "\n\n";
+                });
             });
         </script>
     </head>

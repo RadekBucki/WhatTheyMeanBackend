@@ -18,10 +18,10 @@ def register_analysis(socketio):
 
     @socketio.on('analyse')
     def handle_analyse(analyse_uuid: str):
-        logger.info(f"Received analyse uuid: {analyse_uuid}")
-        analyze: Analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid))
-
         try:
+            logger.info(f"Received analyse uuid: {analyse_uuid}")
+            analyze: Analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid))
+
             base64_file: str = ''
             if analyze.link:
                 base64_file = YouTubeDownloader.download(analyze.link)
@@ -51,8 +51,8 @@ def register_analysis(socketio):
 
         except Exception as e:
             logger.error(f"Error while processing analysis: {e}")
+            emit('failed', str(e))
             DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.FAILED)
-            emit('failed')
 
     def get_sentiment_label(sentiment_scores: Dict[str, float]) -> AuthorAttitude:
         sentiment_label_str = max(sentiment_scores, key=sentiment_scores.get)
