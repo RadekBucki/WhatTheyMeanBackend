@@ -1,14 +1,12 @@
 version: '3.8'
 
 services:
-  db:
+  mongodb:
+    env_file:
+      - .env
     image: mongo:7-jammy
-    restart: unless-stopped
-    env_file: .env
     ports:
-      - 27017:27017
-    volumes:
-      - mongo_data_container:/data/db
+      - ${MONGO_LOCAL_PORT}:${MONGO_DOCKER_PORT}
 
 volumes:
   mongo_data_container:

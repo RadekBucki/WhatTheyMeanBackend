@@ -1,6 +1,8 @@
 import base64
+import os
+
+from moviepy.video.io.VideoFileClip import VideoFileClip
 from pytube import YouTube
-from moviepy.editor import *
 
 
 class YouTubeDownloader:

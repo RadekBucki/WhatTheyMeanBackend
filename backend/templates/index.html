@@ -27,7 +27,7 @@
                     document.getElementById("chat").innerHTML += "You: " + text + "\n\n";
 
                     // Emit a message to the 'send_message' socket
-                    socket.emit('analyse', {'text':text});
+                    socket.emit('analyse', text);
 
                     // Set the textfield input to empty
                     document.getElementById("textfield_input").value = "";
@@ -39,6 +39,12 @@
                 });
                 socket.on('progress', function(data) {
                     document.getElementById("chat").innerHTML += "Server: " + data + "\n\n";
+                });
+                socket.on('done', function() {
+                    document.getElementById("chat").innerHTML += "Server Done" + "\n\n";
+                });
+                socket.on('failed', function(data) {
+                    document.getElementById("chat").innerHTML += "Server Fail:" + data + "\n\n";
                 });
             });
         </script>
