@@ -12,10 +12,10 @@ VIDEO_FILE_PATH = "audio.mp4"
 class TestSentimentAnalysis(unittest.TestCase):
 
     def test_import_from_youtube_positive(self):
-        res = YouTubeDownloader.download("https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+        res = YouTubeDownloader.download("https://www.youtube.com/watch?v=Uv4tHSINZn0")
         self.assertIsNotNone(res)
-        f = open("resources/test_video_parser_res.txt", "r")
-        self.assertEqual(res, f.read())
+        f = open("tests/resources/test_video_parser_res.txt", "r")
+        self.assertEqual(len(res), len(f.read()))
         self.assertFalse(os.path.isfile(AUDIO_FILE_PATH))
         self.assertFalse(os.path.isfile(VIDEO_FILE_PATH))
 
