@@ -1,5 +1,7 @@
 import os
 from typing import Dict
+
+from bson import Binary
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
@@ -7,18 +9,10 @@ OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
-class ProcessingDTO:
-    def __init__(self, transcription: str, summary: str, sentiment: Dict[str, float]):
-        self.transcription = transcription
-        self.summary = summary
-        self.sentiment = sentiment
+class Processing:
 
-
-def process_audio(base64: str) -> ProcessingDTO:
-    transcription = transcribe(base64)
-    summary_result = sum_up(transcription)
-    sentiment_result = run_sentiment_analysis(transcription)
-    return ProcessingDTO(transcription, summary_result, sentiment_result)
+    def __init__(self):
+        pass
 
 
 def transcribe(base64: str) -> str:

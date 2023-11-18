@@ -1,5 +1,6 @@
 import unittest
-from backend.ai import run_sentiment_analysis
+
+from backend.ai.processing import run_sentiment_analysis
 
 
 class TestSentimentAnalysis(unittest.TestCase):
