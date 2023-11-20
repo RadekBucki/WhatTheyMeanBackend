@@ -50,8 +50,3 @@ def get_analyses() -> list[dict[str, Any]]:
     object_list = [analysis.to_mongo() for analysis in DataBaseService.get_analyses_by_uuids(object_id_list)]
 
     return object_list
-
-# for socket connection testing purposes
-@api.route('/', methods=['GET'])
-def for_test():
-    return render_template('index.html')
