@@ -48,5 +48,7 @@ def get_analyses() -> list[dict[str, Any]]:
     logger.info(f"Received uuids: {uuid_list}")
     object_id_list = [ObjectId(uuid) for uuid in uuid_list]
     object_list = [analysis.to_mongo() for analysis in DataBaseService.get_analyses_by_uuids(object_id_list)]
+    for analysis in object_list:
+        del analysis['raw_file']
 
     return object_list
