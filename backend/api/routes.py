@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from bson import ObjectId
-from flask import Blueprint, render_template, request, jsonify, Response
+from flask import Blueprint, request, jsonify, Response
 
 from backend.database.database_service import DataBaseService
 from backend.exceptions.illegal_argument_exception import IllegalArgumentException
