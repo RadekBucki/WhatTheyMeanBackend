@@ -35,7 +35,8 @@ def register_url() -> Response:
 @api.route('/analyse/<analyse_uuid>', methods=['GET'])
 def get_analyse(analyse_uuid: str) -> Response:
     analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid)).to_mongo()
-    del analysis['raw_file']
+    if 'raw_file' in analysis:
+        del analysis['raw_file']
     logger.debug(f"Received analysis: {analysis}")
     return jsonify(analysis)
 
@@ -49,6 +50,7 @@ def get_analyses() -> list[dict[str, Any]]:
     object_id_list = [ObjectId(uuid) for uuid in uuid_list]
     object_list = [analysis.to_mongo() for analysis in DataBaseService.get_analyses_by_uuids(object_id_list)]
     for analysis in object_list:
-        del analysis['raw_file']
+        if 'raw_file' in analysis:
+            del analysis['raw_file']
 
     return object_list
