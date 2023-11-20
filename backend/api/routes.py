@@ -35,6 +35,8 @@ def register_url() -> Response:
 @api.route('/analyse/<analyse_uuid>', methods=['GET'])
 def get_analyse(analyse_uuid: str) -> Response:
     analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid)).to_mongo()
+    del analysis['raw_file']
+    logger.info(f"Received analysis: {analysis}")
     return jsonify(analysis)
 
 @api.route('/analyse', methods=['GET'])
