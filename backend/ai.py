@@ -33,7 +33,7 @@ def process_audio(base64: str) -> Processing:
     return Processing(transcription, sum_up(transcription), run_sentiment_analysis(transcription))
 
 
-def transcribe(base64: str) -> str:
+def transcribe(base64) -> str:
     transcript: str = ''
     mp3_data = b64.b64decode(base64)
     audio_file_path = "audio.mp3"
