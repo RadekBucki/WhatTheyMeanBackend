@@ -41,7 +41,6 @@ def transcribe(base64: str) -> str:
             transcript = openai.Audio.transcribe("whisper-1", audio_file, api_key=OPENAI_API_KEY)
         except openai.error.OpenAIError:
             print("OpenAI whisper's API exception occurred")
-            os.remove(audio_file_path)
     os.remove(audio_file_path)
     return transcript
 
@@ -55,10 +54,11 @@ def sum_up(text: str) -> str:
         api_key=OPENAI_API_KEY,
         model="gpt-3.5-turbo",
         messages=[
-            {"role": "system", "content": "You are a helpful assistant. You are an expert in summarizing text."},
+            {"role": "system", "content": "You are an expert in summarizing text."},
             {"role": "user",
-             "content": f"""I will give you a transcription of audio file (text). Your task is to create a summary of 
-                this text. You have to be concise. Answer immediately without any additional introductions or 
-                explanation, just a quick summary of the text, what is this text about. This is the text: {text}"""},
+             "content": f"""You will receive a transcription of an audio file (text). Your task is to create a summary of 
+                this text. You have to be concise and use english no matter what the original language is.
+                Answer immediately without any additional introductions or explanation, just a summary. 
+                This is the input: {text}"""},
         ])
     return response.choices[0].message
