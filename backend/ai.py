@@ -10,24 +10,24 @@ OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
-class ProcessingDTO:
+class Processing:
     def __init__(self, transcription: str, summary: str, sentiment: Dict[str, float]):
         self.transcription = transcription
         self.summary = summary
         self.sentiment = sentiment
 
 
-def process_audio(base64: str) -> ProcessingDTO:
+def process_audio(base64: str) -> Processing:
     transcription = transcribe(base64)
     if transcription == '':
-        return ProcessingDTO('', '', None)
+        return Processing('', '', None)
     # run sentiment and summary in parallel
-    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-        summary_future = executor.submit(sum_up, transcription)
-        sentiment_future = executor.submit(run_sentiment_analysis, transcription)
-    summary_result = summary_future.result()
-    sentiment_result = sentiment_future.result()
-    return ProcessingDTO(transcription, summary_result, sentiment_result)
+    # with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
+    #     summary_future = executor.submit(sum_up, transcription)
+    #     sentiment_future = executor.submit(run_sentiment_analysis, transcription)
+    # summary_result = summary_future.result()
+    # sentiment_result = sentiment_future.result()
+    return Processing(transcription, sum_up(transcription), run_sentiment_analysis(transcription))
 
 
 def transcribe(base64: str) -> str:
@@ -41,6 +41,7 @@ def transcribe(base64: str) -> str:
             transcript = openai.Audio.transcribe("whisper-1", audio_file, api_key=OPENAI_API_KEY)
         except openai.error.OpenAIError:
             print("OpenAI whisper's API exception occurred")
+            os.remove(audio_file_path)
     os.remove(audio_file_path)
     return transcript
 
