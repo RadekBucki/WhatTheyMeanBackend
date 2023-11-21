@@ -1,12 +1,15 @@
 import concurrent.futures
 import os
+
 import openai
+from openai import OpenAI
 import base64 as b64
 from typing import Dict
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
 
+client = OpenAI(api_key=OPENAI_API_KEY)
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
@@ -37,10 +40,7 @@ def transcribe(base64: str) -> str:
     with open(audio_file_path, "wb") as mp3_file:
         mp3_file.write(mp3_data)
     with open(audio_file_path, "rb") as audio_file:
-        try:
-            transcript = openai.Audio.transcribe("whisper-1", audio_file, api_key=OPENAI_API_KEY)
-        except openai.error.OpenAIError:
-            print("OpenAI whisper's API exception occurred")
+        transcript = client.audio.transcriptions.create(model="whisper-1", file=audio_file).text
     os.remove(audio_file_path)
     return transcript
 
