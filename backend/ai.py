@@ -3,8 +3,11 @@ import os
 import openai
 import base64 as b64
 from typing import Dict
+from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
 OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
+
+sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
 class ProcessingDTO:
@@ -43,8 +46,7 @@ def transcribe(base64: str) -> str:
 
 
 def run_sentiment_analysis(text: str) -> Dict[str, float]:
-    # run sentiment analysis
-    return {'pos': 0.746, 'compound': 0.8316, 'neu': 0.254, 'neg': 0.0}
+    return sentiment_analyzer.polarity_scores(text)
 
 
 def sum_up(text: str) -> str:
