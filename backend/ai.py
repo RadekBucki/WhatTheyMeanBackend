@@ -48,4 +48,14 @@ def run_sentiment_analysis(text: str) -> Dict[str, float]:
 
 
 def sum_up(text: str) -> str:
-    return "shortened text"
+    response = openai.ChatCompletion.create(
+        api_key=OPENAI_API_KEY,
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are a helpful assistant. You are an expert in summarizing text."},
+            {"role": "user",
+             "content": f"""I will give you a transcription of audio file (text). Your task is to create a summary of 
+                this text. You have to be concise. Answer immediately without any additional introductions or 
+                explanation, just a quick summary of the text, what is this text about. This is the text: {text}"""},
+        ])
+    return response.choices[0].message
