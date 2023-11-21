@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 from bson import ObjectId
-from flask import Blueprint, render_template, request, jsonify, Response
+from flask import Blueprint, request, jsonify, Response
 
 from backend.database.database_service import DataBaseService
 from backend.exceptions.illegal_argument_exception import IllegalArgumentException
@@ -17,7 +17,7 @@ def register_file() -> Response:
 
     file = request.files.get('file')
     logger.info(f"Received file: {file}")
-    result: ObjectId = DataBaseService.create_analysis(raw_file=file)
+    result: ObjectId = DataBaseService.create_analysis(raw_file=file.stream.read())
 
     return jsonify({'analysis_uuid': str(result)})
 
@@ -35,6 +35,9 @@ def register_url() -> Response:
 @api.route('/analyse/<analyse_uuid>', methods=['GET'])
 def get_analyse(analyse_uuid: str) -> Response:
     analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid)).to_mongo()
+    if 'raw_file' in analysis:
+        del analysis['raw_file']
+    logger.debug(f"Received analysis: {analysis}")
     return jsonify(analysis)
 
 @api.route('/analyse', methods=['GET'])
@@ -46,10 +49,8 @@ def get_analyses() -> list[dict[str, Any]]:
     logger.info(f"Received uuids: {uuid_list}")
     object_id_list = [ObjectId(uuid) for uuid in uuid_list]
     object_list = [analysis.to_mongo() for analysis in DataBaseService.get_analyses_by_uuids(object_id_list)]
+    for analysis in object_list:
+        if 'raw_file' in analysis:
+            del analysis['raw_file']
 
     return object_list
-
-# for socket connection testing purposes
-@api.route('/', methods=['GET'])
-def for_test():
-    return render_template('index.html')
