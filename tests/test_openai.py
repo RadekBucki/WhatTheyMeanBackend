@@ -30,7 +30,8 @@ class TestOpenAI(unittest.TestCase):
                 "Hundreds of thousands of American patriots are committed to the honesty of our elections and the integrity of our glorious Republic. "
                 "All of us here today do not want to see our election victory stolen by emboldened radical left Democrats, which is what they’re doing and stolen by the fake news media. "
                 "That’s what they’ve done and what they’re doing. We will never give up. We will never concede, it doesn’t happen. You don’t concede when there’s theft involved.")
-        self.assertLess(len(backend.ai.sum_up(text)), len(text))
+        summary = backend.ai.sum_up(text)
+        self.assertLess(len(summary), len(text))
 
 
 if __name__ == '__main__':

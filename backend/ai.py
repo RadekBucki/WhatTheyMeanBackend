@@ -7,9 +7,6 @@ import base64 as b64
 from typing import Dict
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 
-OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
-
-client = OpenAI(api_key=OPENAI_API_KEY)
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
@@ -20,7 +17,7 @@ class Processing:
         self.sentiment = sentiment
 
 
-def process_audio(base64: str) -> Processing:
+def process_audio(base64) -> Processing:
     transcription = transcribe(base64)
     if transcription == '':
         return Processing('', '', None)
@@ -34,7 +31,8 @@ def process_audio(base64: str) -> Processing:
 
 
 def transcribe(base64) -> str:
-    transcript: str = ''
+    key = os.environ.get('OPENAI_API_KEY')
+    client = OpenAI(api_key=key)
     mp3_data = b64.b64decode(base64)
     audio_file_path = "audio.mp3"
     with open(audio_file_path, "wb") as mp3_file:
@@ -50,15 +48,15 @@ def run_sentiment_analysis(text: str) -> Dict[str, float]:
 
 
 def sum_up(text: str) -> str:
-    response = openai.ChatCompletion.create(
-        api_key=OPENAI_API_KEY,
+    client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[
             {"role": "system", "content": "You are an expert in summarizing text."},
-            {"role": "user",
-             "content": f"""You will receive a transcription of an audio file (text). Your task is to create a summary of 
+            {"role": "user", "content": f"""You will receive a transcription of an audio file (text). Your task is to create a summary of 
                 this text. You have to be concise and use english no matter what the original language is.
                 Answer immediately without any additional introductions or explanation, just a summary. 
-                This is the input: {text}"""},
-        ])
-    return response.choices[0].message
+                This is the input: {text}"""}
+        ]
+    )
+    return response.choices[0].message.content
