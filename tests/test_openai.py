@@ -2,7 +2,7 @@ import base64
 import os
 import unittest
 
-import backend.ai
+from backend.ai.processing import sum_up, transcribe
 
 
 class TestOpenAI(unittest.TestCase):
@@ -10,7 +10,7 @@ class TestOpenAI(unittest.TestCase):
     def test_transcribe(self):
         with open(os.path.join('audio', 'monologue.mp3'), 'rb') as mp3_file:
             encoded_audio = base64.b64encode(mp3_file.read())
-            text = backend.ai.transcribe(encoded_audio)
+            text = transcribe(encoded_audio)
         self.assertNotEquals(text, '')
 
     def test_sum_up(self):
@@ -30,7 +30,7 @@ class TestOpenAI(unittest.TestCase):
                 "Hundreds of thousands of American patriots are committed to the honesty of our elections and the integrity of our glorious Republic. "
                 "All of us here today do not want to see our election victory stolen by emboldened radical left Democrats, which is what they’re doing and stolen by the fake news media. "
                 "That’s what they’ve done and what they’re doing. We will never give up. We will never concede, it doesn’t happen. You don’t concede when there’s theft involved.")
-        summary = backend.ai.sum_up(text)
+        summary = sum_up(text)
         self.assertLess(len(summary), len(text))
 
 
