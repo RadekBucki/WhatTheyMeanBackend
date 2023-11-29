@@ -10,9 +10,9 @@ def register_socketio_events(socketio):
     @socketio.on('connect')
     def on_connect():
         logger.info("Connected")
-        emit('after connect', "Connected successfully", broadcast=True)
+        emit('after connect', "Connected successfully")
 
     @socketio.on('disconnect')
     def on_disconnect():
         logger.info("Disconnected")
-        emit('after disconnect', "Disconnected successfully", broadcast=True)
+        emit('after disconnect', "Disconnected successfully")

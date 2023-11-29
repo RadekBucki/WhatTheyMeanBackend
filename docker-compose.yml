@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  mongodb:
+    env_file:
+      - .env
+    image: mongo:7-jammy
+    ports:
+      - ${MONGO_LOCAL_PORT}:${MONGO_DOCKER_PORT}
+
+volumes:
+  mongo_data_container:
