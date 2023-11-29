@@ -12,7 +12,7 @@ class TestOpenAI(unittest.TestCase):
             encoded_audio = base64.b64encode(mp3_file.read())
             text = backend.ai.transcribe(encoded_audio)
         self.assertNotEquals(text, '')
-    
+
     def test_sum_up(self):
         text = ("The media will not show the magnitude of this crowd. Even I, when I turned on today, I looked, and I "
                 "saw thousands of people here, but you don’t see hundreds of thousands of people behind you because "
