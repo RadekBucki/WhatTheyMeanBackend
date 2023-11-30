@@ -1,7 +1,6 @@
 import concurrent.futures
 import os
 
-import openai
 from openai import OpenAI
 import base64 as b64
 from typing import Dict
