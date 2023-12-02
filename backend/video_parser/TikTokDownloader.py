@@ -3,6 +3,7 @@ import os
 import requests
 from bs4 import BeautifulSoup
 
+from backend.exceptions.video_parsing_exception import VideoParsingException
 from backend.video_parser.FormatConverter import FormatConverter
 
 headers = {'Accept-Encoding': 'gzip, deflate, sdch',
@@ -27,7 +28,7 @@ class TikTokDownloader:
         tt_json = json.loads(tt_script.string)
         video_id = list(tt_json['ItemModule'].keys())[0]
         if 'imagePost' in tt_json['ItemModule'][video_id]:
-            raise Exception("Image post cannot be downloaded!")
+            raise VideoParsingException("Image post cannot be downloaded!")
         tt_video_url = tt_json['ItemModule'][video_id]['video']['downloadAddr']
         headers['referer'] = 'https://www.tiktok.com/'
         tt_video = requests.get(tt_video_url, allow_redirects=True, headers=headers, cookies=cookies)

@@ -1,0 +1,2 @@
+class VideoParsingException(Exception):
+    pass
