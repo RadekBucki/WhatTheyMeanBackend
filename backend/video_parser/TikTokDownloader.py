@@ -34,6 +34,6 @@ class TikTokDownloader:
         with open(video_file_path, 'wb') as fn:
             fn.write(tt_video.content)
         audio_base64 = FormatConverter.convert()
-        # os.remove(video_file_path)
-        # os.remove(audio_file_path)
+        os.remove(video_file_path)
+        os.remove(audio_file_path)
         return audio_base64
