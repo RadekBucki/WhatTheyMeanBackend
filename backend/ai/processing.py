@@ -1,4 +1,3 @@
-import concurrent.futures
 import os
 
 from openai import OpenAI
@@ -20,12 +19,6 @@ def process_audio(base64) -> Processing:
     transcription = transcribe(base64)
     if transcription == '':
         return Processing('', '', None)
-    # run sentiment and summary in parallel
-    # with concurrent.futures.ThreadPoolExecutor(max_workers=2) as executor:
-    #     summary_future = executor.submit(sum_up, transcription)
-    #     sentiment_future = executor.submit(run_sentiment_analysis, transcription)
-    # summary_result = summary_future.result()
-    # sentiment_result = sentiment_future.result()
     return Processing(transcription, sum_up(transcription), run_sentiment_analysis(transcription))
 
 
