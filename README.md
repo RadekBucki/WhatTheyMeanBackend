@@ -10,3 +10,4 @@
 - [Code style and quality](docs/CODE.md)
 - [Application setup](docs/SETUP.md)
 - [Database design](docs/DATA_LAYER.md)
+- [AI module](docs/AI.md)
