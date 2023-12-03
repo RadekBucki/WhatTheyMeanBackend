@@ -6,10 +6,12 @@ from flask_socketio import emit
 
 from backend.ai.processing import transcribe, sum_up, run_sentiment_analysis
 from backend.database.database_service import DataBaseService
+from backend.exceptions.illegal_argument_exception import IllegalArgumentException
 from backend.model.analysis import Analysis
 from backend.model.author_attitude import AuthorAttitude
 from backend.model.file_type import FileType
 from backend.model.status import Status
+from backend.video_parser.TikTokDownloader import TikTokDownloader
 from backend.video_parser.YouTubeDownloader import YouTubeDownloader
 
 logger: logging.Logger = logging.getLogger(__name__)
@@ -24,8 +26,8 @@ def register_analysis(socketio):
 
             base64_file: str = ''
             if analyze.link:
-                base64_file = download_file(analyze.link)
-                DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.YOUTUBE)
+                base64_file = download_file(analyse_uuid, analyze.link)
+
             else:
                 DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.RAW)
                 base64_file = str(analyze.raw_file)
@@ -54,10 +56,12 @@ def register_analysis(socketio):
             emit('failed', str(e))
             DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.FAILED)
 
-    def download_file(link: str) -> str:
+    def download_file(analyse_uuid,link: str) -> str:
         if "youtube" in link:
+            DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.YOUTUBE)
             return YouTubeDownloader.download(link)
         elif "tiktok" in link:
+            DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.TIKTOK)
             return TikTokDownloader.download(link)
         else:
             raise IllegalArgumentException("Link is not supported")
