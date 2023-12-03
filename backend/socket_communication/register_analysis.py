@@ -24,7 +24,7 @@ def register_analysis(socketio):
 
             base64_file: str = ''
             if analyze.link:
-                base64_file = YouTubeDownloader.download(analyze.link)
+                base64_file = download_file(analyze.link)
                 DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.YOUTUBE)
             else:
                 DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.RAW)
@@ -53,6 +53,14 @@ def register_analysis(socketio):
             logger.error(f"Error while processing analysis: {e}")
             emit('failed', str(e))
             DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.FAILED)
+
+    def download_file(link: str) -> str:
+        if "youtube" in link:
+            return YouTubeDownloader.download(link)
+        elif "tiktok" in link:
+            return TikTokDownloader.download(link)
+        else:
+            raise IllegalArgumentException("Link is not supported")
 
     def get_sentiment_label(sentiment_scores: Dict[str, float]) -> AuthorAttitude:
         sentiment_label_str = max(sentiment_scores, key=sentiment_scores.get)
