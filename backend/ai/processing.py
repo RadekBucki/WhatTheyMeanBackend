@@ -1,23 +1,38 @@
 import os
+
+from openai import OpenAI
+import base64 as b64
 from typing import Dict
-
-from bson import Binary
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
-
-OPENAI_API_KEY: str = os.environ.get('OPENAI_API_KEY')
 
 sentiment_analyzer = SentimentIntensityAnalyzer()
 
 
 class Processing:
+    def __init__(self, transcription: str, summary: str, sentiment: Dict[str, float]):
+        self.transcription = transcription
+        self.summary = summary
+        self.sentiment = sentiment
 
-    def __init__(self):
-        pass
+
+def process_audio(base64) -> Processing:
+    transcription = transcribe(base64)
+    if transcription == '':
+        return Processing('', '', None)
+    return Processing(transcription, sum_up(transcription), run_sentiment_analysis(transcription))
 
 
-def transcribe(base64: str) -> str:
-    # transcribe audion in parallel
-    return "lorem ipsum"
+def transcribe(base64) -> str:
+    key = os.environ.get('OPENAI_API_KEY')
+    client = OpenAI(api_key=key)
+    mp3_data = b64.b64decode(base64)
+    audio_file_path = "audio.mp3"
+    with open(audio_file_path, "wb") as mp3_file:
+        mp3_file.write(mp3_data)
+    with open(audio_file_path, "rb") as audio_file:
+        transcript = client.audio.transcriptions.create(model="whisper-1", file=audio_file).text
+    os.remove(audio_file_path)
+    return transcript
 
 
 def run_sentiment_analysis(text: str) -> Dict[str, float]:
@@ -25,4 +40,15 @@ def run_sentiment_analysis(text: str) -> Dict[str, float]:
 
 
 def sum_up(text: str) -> str:
-    return "shortened text"
+    client = OpenAI(api_key=os.environ.get('OPENAI_API_KEY'))
+    response = client.chat.completions.create(
+        model="gpt-3.5-turbo",
+        messages=[
+            {"role": "system", "content": "You are an expert in summarizing text."},
+            {"role": "user", "content": f"""You will receive a transcription of an audio file (text). Your task is to create a summary of 
+                this text. You have to be concise and use english no matter what the original language is.
+                Answer immediately without any additional introductions or explanation, just a summary. 
+                This is the input: {text}"""}
+        ]
+    )
+    return response.choices[0].message.content
