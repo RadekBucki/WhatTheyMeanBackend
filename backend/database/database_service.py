@@ -7,9 +7,6 @@ from mongodb_odm import connect
 
 from backend.exceptions.document_not_found_exception import DocumentNotFoundException
 from backend.model.analysis import Analysis
-from backend.model.author_attitude import AuthorAttitude
-from backend.model.file_type import FileType
-from backend.model.status import Status
 
 
 class DataBaseService:

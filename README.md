@@ -1,4 +1,4 @@
-# What They Mean BAckend
+# What They Mean Backend
 
 ## This repository is part of the What They Mean application
 | Responsibility                      | Link                                               |
@@ -11,3 +11,4 @@
 - [Application setup](docs/SETUP.md)
 - [Database design](docs/DATA_LAYER.md)
 - [AI module](docs/AI.md)
+- [API module](docs/API.md)
