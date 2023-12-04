@@ -26,9 +26,9 @@ This endpoint is responsible for returning analyse by uuid.
 This endpoint is responsible for returning all analyses by list of uuids.
 
 #### Request
-| Method | Content-Type | Params     | Description |
-|--------|--------------|------------|-------------|
-| GET   | application/json | uuids:123d | This endpoint requires a JSON object with a uuids field. The uuids field should contain a list of uuids. |
+| Method | Content-Type | Params         | Description |
+|--------|--------------|----------------|-------------|
+| GET   | application/json | uuids:123d,311 | This endpoint requires a JSON object with a uuids field. The uuids field should contain a list of uuids. |
 
 #### Response
 | Status | Content-Type | Body                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           | Description |
