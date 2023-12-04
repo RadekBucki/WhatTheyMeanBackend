@@ -42,7 +42,7 @@ def get_analyse(analyse_uuid: str) -> Response:
 
 @api.route('/analyse', methods=['GET'])
 def get_analyses() -> list[dict[str, Any]]:
-    uuid_list = request.args.getlist('uuids')
+    uuid_list = request.args.get('uuids').split(',')
 
     if not uuid_list:
         raise IllegalArgumentException('No uuids part')
