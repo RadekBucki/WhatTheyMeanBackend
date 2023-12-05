@@ -17,6 +17,7 @@ def client():
     with app.test_client() as client:
         yield client
 
+
 def test_register_file(client):
     with patch('backend.database.database_service.DataBaseService.create_analysis') as mock_create_analysis:
         mock_create_analysis.return_value = 'mocked_uuid'
@@ -41,6 +42,7 @@ def test_register_file_without_file(client):
 
         mock_create_analysis.assert_not_called()
 
+
 def test_register_url(client):
     with patch('backend.database.database_service.DataBaseService.create_analysis') as mock_create_analysis:
         mock_create_analysis.return_value = 'mocked_uuid'
@@ -50,6 +52,7 @@ def test_register_url(client):
         assert response.status_code == 200
         assert response.json == {'analysis_uuid': 'mocked_uuid'}
         mock_create_analysis.assert_called_once()
+
 
 def test_register_url_without_url(client):
     with patch('backend.database.database_service.DataBaseService.create_analysis') as mock_create_analysis:
@@ -73,6 +76,7 @@ def test_get_analyse(client):
         assert response.status_code == 200
         mock_get_analysis_by_uuid.assert_called_once()
 
+
 def test_get_analyse_list(client):
     with patch('backend.database.database_service.DataBaseService.get_analyses_by_uuids') as mock_get_analyses_by_uuids:
         analysis = Analysis()
@@ -82,6 +86,7 @@ def test_get_analyse_list(client):
 
         assert response.status_code == 200
         mock_get_analyses_by_uuids.assert_called_once()
+
 
 if __name__ == '__main__':
     pytest.main()

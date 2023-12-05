@@ -16,8 +16,8 @@ from backend.video_parser.YouTubeDownloader import YouTubeDownloader
 
 logger: logging.Logger = logging.getLogger(__name__)
 
-def register_analysis(socketio):
 
+def register_analysis(socketio):
     @socketio.on('analyse')
     def handle_analyse(analyse_uuid: str):
         try:
@@ -56,7 +56,7 @@ def register_analysis(socketio):
             emit('failed', str(e))
             DataBaseService.update_analysis_by_id(uuid=analyse_uuid, status=Status.FAILED)
 
-    def download_file(analyse_uuid,link: str) -> str:
+    def download_file(analyse_uuid, link: str) -> str:
         if "youtube" in link:
             DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.YOUTUBE)
             return YouTubeDownloader.download(link)
