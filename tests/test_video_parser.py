@@ -25,7 +25,8 @@ class TestVideoParser(unittest.TestCase):
         self.assertFalse(os.path.isfile(FormatConverter.get_video_path()))
 
     def test_import_from_tiktok_positive(self):
-        res = TikTokDownloader.download("https://www.tiktok.com/@tiktok/video/7106594312292453675?is_copy_url=1&is_from_webapp=v1")
+        res = TikTokDownloader.download(
+            "https://www.tiktok.com/@tiktok/video/7106594312292453675?is_copy_url=1&is_from_webapp=v1")
         self.assertIsNotNone(res)
         f = open("tests/resources/test_video_parser_res2.txt", "r")
         self.assertEqual(len(res), len(f.read()))
@@ -34,7 +35,8 @@ class TestVideoParser(unittest.TestCase):
 
     def test_import_from_tiktok_negative_link_not_exist(self):
         with self.assertRaises(KeyError):
-            TikTokDownloader.download("https://www.tiktok.com/@tiktok/video/710gasgsg53675?is_copy_url=1&is_from_webapp=v1")
+            TikTokDownloader.download(
+                "https://www.tiktok.com/@tiktok/video/710gasgsg53675?is_copy_url=1&is_from_webapp=v1")
         self.assertFalse(os.path.isfile(FormatConverter.get_audio_path()))
         self.assertFalse(os.path.isfile(FormatConverter.get_video_path()))
 

@@ -10,6 +10,7 @@ from backend.exceptions.illegal_argument_exception import IllegalArgumentExcepti
 api = Blueprint('api', __name__)
 logger = logging.getLogger(__name__)
 
+
 @api.route('/register/file', methods=['POST'])
 def register_file() -> Response:
     if 'file' not in request.files:
@@ -20,6 +21,7 @@ def register_file() -> Response:
     result: ObjectId = DataBaseService.create_analysis(raw_file=file.stream.read())
 
     return jsonify({'analysis_uuid': str(result)})
+
 
 @api.route('/register/url', methods=['POST'])
 def register_url() -> Response:
@@ -32,6 +34,7 @@ def register_url() -> Response:
 
     return jsonify({'analysis_uuid': str(result)})
 
+
 @api.route('/analyse/<analyse_uuid>', methods=['GET'])
 def get_analyse(analyse_uuid: str) -> Response:
     analysis = DataBaseService.get_analysis_by_uuid(ObjectId(analyse_uuid)).to_mongo()
@@ -39,6 +42,7 @@ def get_analyse(analyse_uuid: str) -> Response:
         del analysis['raw_file']
     logger.debug(f"Received analysis: {analysis}")
     return jsonify(analysis)
+
 
 @api.route('/analyse', methods=['GET'])
 def get_analyses() -> list[dict[str, Any]]:

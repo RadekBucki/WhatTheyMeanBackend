@@ -6,7 +6,6 @@ logger = logging.getLogger(__name__)
 
 
 def register_socketio_events(socketio):
-
     @socketio.on('connect')
     def on_connect():
         logger.info("Connected")
