@@ -36,6 +36,6 @@ class DataBaseService:
             if value is not None:
                 setattr(analysis, key, value)
 
-        analysis.finish_date = datetime.now() if 'finish_date' in kwargs else analysis.finish_date
+        analysis.finish_date = datetime.now() if 'finish_date' not in kwargs else analysis.finish_date
 
         analysis.update()
