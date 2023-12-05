@@ -13,3 +13,4 @@
 - [AI module](docs/AI.md)
 - [API module](docs/API.md)
 - [Socket module](docs/SOCKET.md)
+- [YouTube and TikTok download](docs/YT_AND_TIKTOK.md)
