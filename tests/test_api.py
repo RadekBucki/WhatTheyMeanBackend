@@ -24,7 +24,7 @@ def test_register_file(client):
 
         mock_file = BytesIO(b"Mocked file content")
 
-        response = client.post('/register/file', data={'file': (mock_file, 'test.txt')})
+        response = client.post('/register/file', data={'file': (mock_file, 'test.mp3')})
 
         assert response.status_code == 200
         assert response.json == {'analysis_uuid': 'mocked_uuid'}
