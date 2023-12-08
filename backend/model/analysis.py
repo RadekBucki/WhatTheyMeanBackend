@@ -10,6 +10,7 @@ from backend.model.status import Status
 
 
 class Analysis(Document):
+    uuid: str = ''
     name: str = "Analysis"
     start_date: datetime = datetime.now()
     finish_date: Optional[datetime] = None
