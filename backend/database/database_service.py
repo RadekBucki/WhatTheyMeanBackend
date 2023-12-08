@@ -20,6 +20,7 @@ class DataBaseService:
     def get_analysis_by_uuid(uuid: ObjectId) -> Analysis:
         analysis = Analysis.find_one({"_id": uuid})
         if analysis:
+            analysis.uuid = str(analysis.id)
             return analysis
         else:
             raise DocumentNotFoundException("Analysis with id " + str(uuid) + " not found in collection")
