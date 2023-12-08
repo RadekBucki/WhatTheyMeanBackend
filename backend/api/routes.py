@@ -17,8 +17,14 @@ def register_file() -> Response:
         raise IllegalArgumentException('No file part')
 
     file = request.files.get('file')
+    file_extension = file.filename.split('.')[1]
+
+    allowed_extensions = ['mp3', 'mp4']
+    if file_extension not in allowed_extensions:
+        raise IllegalArgumentException('Not supported file type (Only mp3 and mp4 are supported)')
     logger.info(f"Received file: {file}")
-    result: ObjectId = DataBaseService.create_analysis(raw_file=file.stream.read())
+
+    result: ObjectId = DataBaseService.create_analysis(raw_file=file.read())
 
     return jsonify({'analysis_uuid': str(result)})
 
