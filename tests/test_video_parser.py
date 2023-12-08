@@ -13,7 +13,7 @@ class TestVideoParser(unittest.TestCase):
     def test_import_from_youtube_positive(self):
         res = YouTubeDownloader.download("https://www.youtube.com/watch?v=Uv4tHSINZn0")
         self.assertIsNotNone(res)
-        f = open("tests/resources/test_video_parser_res.txt", "r")
+        f = open("resources/test_video_parser_res.txt", "r")
         self.assertEqual(len(res), len(f.read()))
         self.assertFalse(os.path.isfile(FormatConverter.get_audio_path()))
         self.assertFalse(os.path.isfile(FormatConverter.get_video_path()))
@@ -28,7 +28,7 @@ class TestVideoParser(unittest.TestCase):
         res = TikTokDownloader.download(
             "https://www.tiktok.com/@tiktok/video/7106594312292453675?is_copy_url=1&is_from_webapp=v1")
         self.assertIsNotNone(res)
-        f = open("tests/resources/test_video_parser_res2.txt", "r")
+        f = open("resources/test_video_parser_res2.txt", "r")
         self.assertEqual(len(res), len(f.read()))
         self.assertFalse(os.path.isfile(FormatConverter.get_audio_path()))
         self.assertFalse(os.path.isfile(FormatConverter.get_video_path()))

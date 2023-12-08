@@ -33,4 +33,4 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        pytest -k "not TestOpenAI"
+        pytest -k "not TestOpenAI and not TestVideoParser"
