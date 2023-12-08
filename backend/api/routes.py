@@ -18,7 +18,7 @@ def register_file() -> Response:
 
     file = request.files.get('file')
     logger.info(f"Received file: {file}")
-    result: ObjectId = DataBaseService.create_analysis(raw_file=file.stream.read())
+    result: ObjectId = DataBaseService.create_analysis(raw_file=file.read())
 
     return jsonify({'analysis_uuid': str(result)})
 

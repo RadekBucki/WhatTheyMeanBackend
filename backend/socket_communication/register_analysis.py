@@ -1,3 +1,4 @@
+import base64
 import logging
 from typing import Dict
 
@@ -30,7 +31,7 @@ def register_analysis(socketio):
 
             else:
                 DataBaseService.update_analysis_by_id(uuid=analyse_uuid, file_type=FileType.RAW)
-                base64_file = str(analyze.raw_file)
+                base64_file = base64.b64encode(analyze.raw_file).decode()
             emit('progress', "20")
 
             transcription = transcribe(base64_file)
