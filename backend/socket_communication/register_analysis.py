@@ -67,8 +67,7 @@ def register_analysis(socketio):
         else:
             raise IllegalArgumentException("Link is not supported")
 
-    def get_sentiment_label(sentiment_scores: Dict[str, float]) -> AuthorAttitude:
-        sentiment_label_str = max(sentiment_scores, key=sentiment_scores.get)
-        sentiment_label = AuthorAttitude(sentiment_label_str)
-
-        return sentiment_label
+    def get_sentiment_label(sentiment_scores: Dict[str, float]) -> str:
+        max_key = max(sentiment_scores, key=sentiment_scores.get)
+        matching_attitude = next(attitude for attitude in AuthorAttitude if max_key in attitude.value)
+        return matching_attitude
